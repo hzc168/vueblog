@@ -442,7 +442,31 @@ public class ShiroConfig {
 2. 重写了`SessionManager`和`DefaultWebSecurityManager`，同时在`DefaultWebSecurityManager`中为了关闭shiro自带的session方式，我们需要设置为false，这样用户就不再能通过session方式登录shiro。后面讲采用jwt凭证登陆。
 3. 在ShiroFilterChainDefinition中，我们不再通过编码形式拦截Controller访问路径，而是所有的路由都需要经过JwtFilter这个过滤器，然后判断请求头中是否含有jwt信息，有就登陆，没有就跳过。跳过之后，有Controller中的shiro注解进行再次拦截，比如`@RequiresAuthentication`，这样控制权限访问。
 
+##### AccountRealm
 
+AccountRealm是shiro进行登陆或者权限校验的逻辑所在，算是核心了，我们需要写3个方法，分别是
+
+- supports：为了让realm支持jwt的凭证校验
+- doGetAuthorizationInfo：权限校验
+- doGetAuthenticationInfo：登录认证校验
+
+我们先来总体看看AccountRealm的代码，然后逐个分析：
+
+`com.markerhub.shiro.AccountRealm`
+
+```java
+@Slf4j
+@Component
+public class AccountRealm extends AuthorizingRealm {
+  @Autowired
+  JwtUtils jwtUtils;
+  @Autowired
+  UserService userService;
+  
+}
+
+
+```
 
 
 
