@@ -462,12 +462,35 @@ public class AccountRealm extends AuthorizingRealm {
   JwtUtils jwtUtils;
   @Autowired
   UserService userService;
-  
+  @Override
+  public boolean supports(AuthenticationToken token) {
+    return token instanceof JwtToken;
+  }
+  @Override
+  protected AuthorizationInfo doGetAuthorizationInfo(AuthenticationToken token) throws AuthenticationException {
+    JwtToken jwt = (JwtToken)token;
+    log.info("jwt----------------->{}", jwt);
+    String userId = jwtUtils.getClaimByToken((String) jwt.getPrincipal()).getSubject();
+    User user = userService.getById(Long.parseLong(userId));
+    if(user == null) {
+      throw new UnknownAccountException("账户不存在！");
+    }
+    if(user.getStatus() == -1) {
+      throw new LocakedAccountException("账户已被锁定！");
+    }
+    AccountProfile profile = new AccountProfile();
+    BeanUtil.copyProperties(user, profile);
+    log.info("profile--------------->{}", profile.toString());
+    return new SimpleAuthenticationInfo(profile, jwt.getCredentials(), getName());
+  }
 }
-
-
 ```
 
+其实主要就是doGetAuthenticationInfo登录认证这个方法，可以看到我们通过jwt获取到用户信息，判断用户的状态，最后一场就抛出对应的异常信息，封装成SimpleAuthenticationInfo返回给shiro。
+
+接下来我们逐步分析里面出现的新类：
+
+- shiro默认supports的是UsernamePasswordToken，而我们现在采用了jwt的方式，所以这里我们自定义一个JwtToken，来完成shiro的supports方法。
 
 
 
@@ -487,6 +510,7 @@ public class AccountRealm extends AuthorizingRealm {
 
 
 
+原文源码：https://github.com/MarkerHub/vueblog
 
 
 
