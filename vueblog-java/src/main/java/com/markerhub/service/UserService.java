@@ -1,7 +1,8 @@
 package com.markerhub.service;
 
-import com.markerhub.entity.User;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.markerhub.entity.User;
+import org.springframework.stereotype.Service;
 
 /**
  * <p>
@@ -11,6 +12,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
  * @author 关注公众号：MarkerHub
  * @since 2021-11-30
  */
+@Service
 public interface UserService extends IService<User> {
 
 }

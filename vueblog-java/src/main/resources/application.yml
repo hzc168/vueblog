@@ -1,8 +1,6 @@
 
 # DataSource Config
 spring:
-  autoconfigure:
-    exclude: org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration,org.springframework.boot.autoconfigure.jdbc.DataSourceTransactionManagerAutoConfiguration
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3306/vueblog?useUnicode=true&useSSL=false&characterEncoding=utf8&&serverTimezone=UTC
@@ -19,4 +17,4 @@ markerhub:
     expire: 604800
     header: token
 mybatis-plus:
-  mapper-locations: classpath*:mapper/**Mapper.xml
+  mapper-locations: classpath:mapper/*.xml

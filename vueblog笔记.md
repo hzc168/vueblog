@@ -84,7 +84,7 @@ mybatis-plus:
 
 上面除了配置数据库的信息，还配置了myabtis plus的mapper的xml文件的扫描路径，这一步不要忘记了。
 
-如果数据库连接报错：
+如果数据库连接报错：(后面验证后此配置删除)
 
 1. 检查url
 2. 数据库配置
@@ -969,6 +969,5 @@ public class ShiroUtil {
 
 注意[@RequiresAuthentication](https://github.com/RequiresAuthentication)说明需要登录之后才能访问的接口，其他需要权限的接口可以添加shiro的相关注解。
 接口比较简单，我们就不多说了，基本增删改查而已。注意的是edit方法是需要登录才能操作的受限资源。
-
 
 

@@ -43,8 +43,8 @@ public class BlogController {
         return Result.succ(blog);
     }
 
-    @RequiresAuthentication
     @PostMapping("/blog/edit")
+    @RequiresAuthentication
     public Result edit(@Validated @RequestBody Blog blog) {
         System.out.println(blog.toString());
         Blog temp = null;
